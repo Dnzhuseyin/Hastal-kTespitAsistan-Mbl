@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "627955703818",
+    "project_id": "hastaliktespitasistani",
+    "storage_bucket": "hastaliktespitasistani.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:627955703818:android:a27e9fa70809854eb3bff3",
+        "android_client_info": {
+          "package_name": "com.example.fonksiyonel"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOvBRDkwp9Lm1GNOY6OaSNMQ4bUaVHUFU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
