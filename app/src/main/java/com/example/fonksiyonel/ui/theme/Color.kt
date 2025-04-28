@@ -20,6 +20,7 @@ val OnPrimary = Color(0xFFFFFFFF)
 val OnSecondary = Color(0xFFFFFFFF)
 val OnBackground = Color(0xFF1D1D1D)
 val OnSurface = Color(0xFF1D1D1D)
+val OnError = Color(0xFFFFFFFF)
 
 // Status colors
 val Healthy = Color(0xFF4CD964)
