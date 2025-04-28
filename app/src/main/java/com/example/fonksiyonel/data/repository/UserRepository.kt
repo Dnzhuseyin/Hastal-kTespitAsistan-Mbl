@@ -8,13 +8,33 @@ import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.flow.flow
 
 class UserRepository {
     private val database = FirebaseDatabase.getInstance().reference
+    
+    // Test modu
+    private val isTestMode = true
 
     fun getUserData(userId: String): Flow<Result<User>> = callbackFlow {
-        // Test amacıyla önce database'den veri çekmeyi deneyelim
+        // Test verisi
+        val testUser = User(
+            uid = userId,
+            email = "test@example.com",
+            fullName = "Test Kullanıcı",
+            age = 30,
+            gender = "Erkek"
+        )
+        
+        if (isTestMode) {
+            // Test modunda hemen test verisi döndür
+            trySend(Result.success(testUser))
+            
+            // Gerçek bir dinleyici olmadığı için, sadece kapama fonksiyonu sağla
+            awaitClose { }
+            return@callbackFlow
+        }
+        
+        // Gerçek Firebase dinleyicisi
         val userRef = database.child("users").child(userId)
         val listener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -22,40 +42,24 @@ class UserRepository {
                 if (user != null) {
                     trySend(Result.success(user))
                 } else {
-                    // Kullanıcı bulunamadığında test verisini gönder
-                    trySend(Result.success(createTestUserData(userId)))
+                    // Kullanıcı verisi bulunamazsa test verisi kullan
+                    trySend(Result.success(testUser))
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                // Hata durumunda test verisini gönder
-                trySend(Result.success(createTestUserData(userId)))
+                // Hata durumunda test verisi kullan
+                trySend(Result.success(testUser))
             }
         }
         
         try {
             userRef.addValueEventListener(listener)
+            awaitClose { userRef.removeEventListener(listener) }
         } catch (e: Exception) {
-            // Firebase bağlantısı olmadığında test verisini gönder
-            trySend(Result.success(createTestUserData(userId)))
+            // Firebase bağlantı hatası durumunda test verisi kullan
+            trySend(Result.success(testUser))
+            awaitClose { }
         }
-        
-        awaitClose { 
-            try {
-                userRef.removeEventListener(listener)
-            } catch (e: Exception) {
-                // Ignore exception on close
-            }
-        }
-    }
-    
-    private fun createTestUserData(userId: String): User {
-        return User(
-            uid = userId,
-            email = "test@example.com",
-            fullName = "Test Kullanıcı",
-            age = 30,
-            gender = "Erkek"
-        )
     }
 } 

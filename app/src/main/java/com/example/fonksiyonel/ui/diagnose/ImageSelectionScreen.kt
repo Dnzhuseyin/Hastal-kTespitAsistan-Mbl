@@ -213,7 +213,10 @@ fun ImageSelectionScreen(
                                                 colors = listOf(Accent1.copy(alpha = 0.7f), Accent2.copy(alpha = 0.7f))
                                             )
                                         )
-                                        .scale(scale),
+                                        .graphicsLayer { 
+                                            scaleX = scale
+                                            scaleY = scale
+                                        },
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Icon(
