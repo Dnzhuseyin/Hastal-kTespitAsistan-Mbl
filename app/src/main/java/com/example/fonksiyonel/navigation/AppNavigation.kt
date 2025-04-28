@@ -10,6 +10,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.fonksiyonel.ui.auth.AuthViewModel
 import com.example.fonksiyonel.ui.auth.LoginScreen
 import com.example.fonksiyonel.ui.auth.RegisterScreen
+import com.example.fonksiyonel.ui.diagnose.DiagnoseResultScreen
+import com.example.fonksiyonel.ui.diagnose.DiagnoseViewModel
+import com.example.fonksiyonel.ui.diagnose.ImageSelectionScreen
 import com.example.fonksiyonel.ui.profile.ProfileScreen
 import com.example.fonksiyonel.ui.profile.ProfileViewModel
 
@@ -17,6 +20,8 @@ object Routes {
     const val LOGIN = "login"
     const val REGISTER = "register"
     const val PROFILE = "profile"
+    const val IMAGE_SELECTION = "image_selection"
+    const val DIAGNOSE_RESULT = "diagnose_result"
 }
 
 @Composable
@@ -26,6 +31,7 @@ fun AppNavigation(
 ) {
     val authViewModel: AuthViewModel = viewModel()
     val profileViewModel: ProfileViewModel = viewModel()
+    val diagnoseViewModel: DiagnoseViewModel = viewModel()
     
     // Check if user is already logged in
     val initialRoute = remember {
@@ -71,9 +77,38 @@ fun AppNavigation(
         composable(Routes.PROFILE) {
             ProfileScreen(
                 viewModel = profileViewModel,
+                onNavigateToImageSelection = {
+                    navController.navigate(Routes.IMAGE_SELECTION)
+                },
                 onNavigateToLogin = {
                     navController.navigate(Routes.LOGIN) {
                         popUpTo(Routes.PROFILE) { inclusive = true }
+                    }
+                }
+            )
+        }
+        
+        composable(Routes.IMAGE_SELECTION) {
+            ImageSelectionScreen(
+                viewModel = diagnoseViewModel,
+                onNavigateToResults = {
+                    navController.navigate(Routes.DIAGNOSE_RESULT)
+                },
+                onBackToProfile = {
+                    navController.navigateUp()
+                }
+            )
+        }
+        
+        composable(Routes.DIAGNOSE_RESULT) {
+            DiagnoseResultScreen(
+                viewModel = diagnoseViewModel,
+                onBackToImageSelection = {
+                    navController.navigateUp()
+                },
+                onNewAnalysis = {
+                    navController.navigate(Routes.IMAGE_SELECTION) {
+                        popUpTo(Routes.IMAGE_SELECTION) { inclusive = true }
                     }
                 }
             )
