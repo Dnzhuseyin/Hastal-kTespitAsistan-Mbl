@@ -1,11 +1,9 @@
 package com.example.fonksiyonel.navigation
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -22,15 +20,7 @@ import com.example.fonksiyonel.ui.diagnose.ImageSelectionScreen
 import com.example.fonksiyonel.ui.home.HomeScreen
 import com.example.fonksiyonel.ui.profile.ProfileScreen
 import com.example.fonksiyonel.ui.profile.ProfileViewModel
-
-object Routes {
-    const val LOGIN = "login"
-    const val REGISTER = "register"
-    const val PROFILE = "profile"
-    const val IMAGE_SELECTION = "image_selection"
-    const val DIAGNOSE_RESULT = "diagnose_result"
-    const val HOME = "home"
-}
+import androidx.compose.ui.Modifier
 
 @Composable
 fun AppNavigation(
@@ -83,7 +73,7 @@ fun AppNavigation(
         NavHost(
             navController = navController,
             startDestination = initialRoute,
-            modifier = androidx.compose.ui.Modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding)
         ) {
             composable(Routes.LOGIN) {
                 LoginScreen(
