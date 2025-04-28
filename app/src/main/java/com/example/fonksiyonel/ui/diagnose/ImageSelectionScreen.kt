@@ -57,18 +57,6 @@ fun ImageSelectionScreen(
         }
     }
     
-    // Animasyon için değişkenler
-    val infiniteTransition = rememberInfiniteTransition(label = "pulse")
-    val scale by infiniteTransition.animateFloat(
-        initialValue = 1f,
-        targetValue = 1.05f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(1000, easing = EaseInOutQuad),
-            repeatMode = RepeatMode.Reverse
-        ),
-        label = "scale"
-    )
-    
     Scaffold(
         topBar = {
             TopAppBar(
@@ -212,11 +200,7 @@ fun ImageSelectionScreen(
                                             brush = Brush.linearGradient(
                                                 colors = listOf(Accent1.copy(alpha = 0.7f), Accent2.copy(alpha = 0.7f))
                                             )
-                                        )
-                                        .graphicsLayer { 
-                                            scaleX = scale
-                                            scaleY = scale
-                                        },
+                                        ),
                                     contentAlignment = Alignment.Center
                                 ) {
                                     Icon(
